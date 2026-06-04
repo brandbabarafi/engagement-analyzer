@@ -1,15 +1,8 @@
-import type { Metadata } from "next";
 import "./globals.css";
 
-export const metadata: Metadata = {
+export const metadata = {
   title: "Engagement Analyzer - Instagram & TikTok Public Engagement Metrics",
   description: "Analyze Instagram and TikTok public engagement, detect bot activity, and get authenticity scores for accounts.",
-  keywords: ["Instagram analyzer", "TikTok analyzer", "engagement rate", "fraud detection"],
-  openGraph: {
-    title: "Engagement Analyzer",
-    description: "Professional Instagram & TikTok engagement analysis tool",
-    type: "website",
-  },
 };
 
 export default function RootLayout({ children }) {
