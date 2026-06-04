@@ -1,12 +1,7 @@
-/**
- * Landing Page - Input & Search
- */
-
 'use client';
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import GlassCard from '@/components/GlassCard';
 
 export default function Home() {
   const [url, setUrl] = useState('');
@@ -40,9 +35,9 @@ export default function Home() {
         return;
       }
 
-      // Pass data to dashboard via URL params (or use context/localStorage)
-      const encodedData = encodeURIComponent(JSON.stringify(data));
-      router.push(`/dashboard?data=${encodedData}`);
+      // Store data di localStorage, bukan URL params
+      localStorage.setItem('dashboardData', JSON.stringify(data));
+      router.push('/dashboard');
 
     } catch (err) {
       setError('Gagal terhubung ke server. Coba lagi.');
@@ -50,120 +45,74 @@ export default function Home() {
     }
   };
 
-  const exampleLinks = [
-    'https://instagram.com/username',
-    'https://tiktok.com/@username',
-  ];
-
   return (
-    <main className="min-h-screen flex items-center justify-center px-4 py-10">
+    <main className="bg-white min-h-screen flex items-center justify-center px-4">
       <div className="w-full max-w-2xl">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">
-            Engagement Analyzer
-          </h1>
-          <p className="text-xl text-white/80">
-            Analisis authentic engagement Instagram & TikTok dengan deteksi bot canggih
-          </p>
-        </div>
-
-        {/* Main Card */}
-        <GlassCard variant="light" className="mb-6">
-          <form onSubmit={handleAnalyze} className="space-y-6">
-            {/* URL Input */}
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-3">
-                📱 Masukkan URL Profil
-              </label>
-              <input
-                type="url"
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
-                placeholder="https://instagram.com/username atau https://tiktok.com/@username"
-                className="w-full px-4 py-3 rounded-ios-sm border border-white/30 bg-white/60 text-slate-800 placeholder-slate-400 focus:outline-none focus:border-purple-400 focus:bg-white transition-all"
-              />
-              <p className="text-xs text-slate-500 mt-2">
-                ✓ Data publik saja yang dianalisis. Tidak perlu login.
-              </p>
-            </div>
-
-            {/* Example Links */}
-            <div>
-              <p className="text-xs uppercase tracking-wider text-slate-600 mb-3 font-semibold">
-                Contoh Format
-              </p>
-              <div className="space-y-2">
-                {exampleLinks.map((link, idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    onClick={() => setUrl(link)}
-                    className="w-full text-left px-3 py-2 text-sm text-slate-600 hover:bg-white/40 rounded-ios-sm transition-colors"
-                  >
-                    {link}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Error Message */}
-            {error && (
-              <div className="bg-ios-danger-light border border-red-300 rounded-ios-sm p-3">
-                <p className="text-sm text-red-700">⚠️ {error}</p>
+        {/* Centered Search Box */}
+        <form onSubmit={handleAnalyze} className="space-y-4 mb-12">
+          <div className="relative">
+            <input
+              type="url"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              placeholder="Masukkan URL profil..."
+              className="w-full px-6 py-4 border-2 border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent text-gray-900 placeholder-gray-400 text-lg transition-all"
+              disabled={loading}
+            />
+            {loading && (
+              <div className="absolute right-6 top-1/2 -translate-y-1/2">
+                <div className="animate-spin">
+                  <svg className="w-6 h-6 text-gray-400" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                </div>
               </div>
             )}
+          </div>
 
-            {/* Submit Button */}
+          {error && (
+            <div className="bg-red-50 border border-red-200 rounded-xl p-4 text-center">
+              <p className="text-sm text-red-700">⚠️ {error}</p>
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full py-4 bg-gray-900 text-white font-semibold rounded-2xl hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-base"
+          >
+            {loading ? 'Menganalisis...' : 'Analisis'}
+          </button>
+        </form>
+
+        {/* Examples - Minimal */}
+        <div className="text-center space-y-3">
+          <p className="text-xs text-gray-500 uppercase tracking-wider">Contoh</p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-ios hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
+              type="button"
+              onClick={() => setUrl('https://instagram.com/instagram')}
+              className="flex-1 text-xs text-gray-600 hover:text-gray-900 p-2 rounded-lg hover:bg-gray-50 transition-colors"
             >
-              {loading ? (
-                <>
-                  <span className="inline-block animate-spin mr-2">⟳</span>
-                  Menganalisis...
-                </>
-              ) : (
-                '🔍 Analisis Sekarang'
-              )}
+              instagram.com/instagram
             </button>
-          </form>
-        </GlassCard>
-
-        {/* Info Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 no-print">
-          <GlassCard variant="light">
-            <h3 className="font-semibold text-slate-700 mb-3">✨ Fitur Utama</h3>
-            <ul className="text-sm text-slate-600 space-y-2">
-              <li>✓ Hitung Engagement Rate akurat</li>
-              <li>✓ Deteksi like bot & injeksi</li>
-              <li>✓ Analisis konsistensi engagement</li>
-              <li>✓ Skor authenticity 0-100</li>
-            </ul>
-          </GlassCard>
-
-          <GlassCard variant="light">
-            <h3 className="font-semibold text-slate-700 mb-3">📊 Apa yang Dianalisis</h3>
-            <ul className="text-sm text-slate-600 space-y-2">
-              <li>✓ Like/View ratio</li>
-              <li>✓ Like/Comment ratio</li>
-              <li>✓ Konsistensi engagement</li>
-              <li>✓ Export PDF professional</li>
-            </ul>
-          </GlassCard>
+            <button
+              type="button"
+              onClick={() => setUrl('https://tiktok.com/@tiktok')}
+              className="flex-1 text-xs text-gray-600 hover:text-gray-900 p-2 rounded-lg hover:bg-gray-50 transition-colors"
+            >
+              tiktok.com/@tiktok
+            </button>
+          </div>
         </div>
+      </div>
 
-        {/* Footer */}
-        <div className="text-center mt-12 text-white/60 text-xs">
-          <p>
-            Made with ❤️ for digital marketers & influencers
-          </p>
-          <p className="mt-2">
-            Disclaimer: Tool ini untuk analisis data publik saja. Bukan afiliasi resmi Instagram atau TikTok.
-          </p>
-        </div>
+      {/* Footer */}
+      <div className="fixed bottom-8 left-0 right-0 text-center">
+        <p className="text-xs text-gray-500">
+          Made with ❤️ from <span className="font-medium text-gray-900">Marcomm Baba Rafi</span>
+        </p>
       </div>
     </main>
   );
