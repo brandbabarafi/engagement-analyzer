@@ -1,0 +1,114 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #0f172a;
+}
+
+/* Dark Mode Background Gradient */
+body {
+  min-height: 100vh;
+}
+
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+}
+
+/* Print Media - PDF Export Styling */
+@media print {
+  body {
+    background: white;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .pdf-card {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    background: white !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.06) !important;
+  }
+
+  .pdf-section {
+    page-break-after: avoid;
+  }
+
+  /* Hirarki tipografi untuk cetak */
+  .pdf-h1 {
+    font-size: 22pt;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 8pt;
+    border-bottom: 1px solid #cbd5e1;
+    padding-bottom: 4pt;
+  }
+
+  .pdf-h2 {
+    font-size: 14pt;
+    font-weight: 600;
+    color: #334155;
+    margin-top: 12pt;
+    margin-bottom: 6pt;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .pdf-metric-value {
+    font-size: 36pt;
+    font-weight: 800;
+    color: #0f172a;
+  }
+
+  .pdf-metric-label {
+    font-size: 8pt;
+    font-weight: 500;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .pdf-description {
+    font-size: 9.5pt;
+    color: #1e293b;
+    line-height: 1.5;
+  }
+
+  /* Status highlight colors untuk cetak */
+  .pdf-safe {
+    background-color: rgba(34, 197, 94, 0.12) !important;
+    color: #065f46 !important;
+    padding: 8pt 12pt;
+    border-radius: 8pt;
+    border: 1px solid rgba(34, 197, 94, 0.25);
+  }
+
+  .pdf-warning {
+    background-color: rgba(251, 191, 36, 0.12) !important;
+    color: #92400e !important;
+    padding: 8pt 12pt;
+    border-radius: 8pt;
+    border: 1px solid rgba(251, 191, 36, 0.25);
+  }
+
+  .pdf-danger {
+    background-color: rgba(248, 113, 113, 0.12) !important;
+    color: #991b1b !important;
+    padding: 8pt 12pt;
+    border-radius: 8pt;
+    border: 1px solid rgba(248, 113, 113, 0.25);
+  }
+}
